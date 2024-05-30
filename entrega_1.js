@@ -20,33 +20,38 @@ let login_conta = 0
 //manipulada pelo método sair() da classe Sistema
 let sair = false
 
-class Pedido{
-    constructor(id_pedido, id_cliente, status, data_pedido){
-        this.id_pedido = id_pedido
+class Pedido extends Produto{
+    constructor(id_cliente, data_pedido){
+        this.id_pedido = pedidos_id
+        pedidos_id++
         this.id_cliente = id_cliente
-        this.status = status
+        this.status = "Pendente"
         this.data_pedido = data_pedido
     }
 }
 
 class Funcionário{
-    constructor(id_funcionario, nome, cpf, email, senha){
-        this.id_funcionario = id_funcionario
+    constructor(nome, cpf, email, senha){
+        this.id_funcionario = funcionarios_id
+        funcionarios_id++
         this.nome = nome
         this.cpf = cpf
         this.email = email
         this.senha = senha
+        this.cliente = false
     }
 }
 
 class Cliente{
-    constructor(id_cliente, nome, data_nascimento, cpf, email, senha){
-        this.id_cliente = id_cliente
+    constructor(nome, data_nascimento, cpf, email, senha){
+        this.id_cliente = clientes_id
+        clientes_id++
         this.nome = nome
         this.data_nascimento = data_nascimento
         this.cpf = cpf
         this.email = email
         this.senha = senha
+        this.cliente = true
     }
 }
 
@@ -75,21 +80,19 @@ class Sistema{
 
             //Não permite dois emails iguais nos cadastros
             for (let i = 0; i < cadastros.length; i++) {
-                if (cadastros[i][0] == email) {
+                if (cadastros[i].email == email) {
                   console.log("Email já cadastrado")
                   return
                 }
             }
             let senha = prompt("crie a sua senha: ")
 
-            //cria um novo cadastro
-            let cadastro = [email,senha,0]
-            cadastros.push(cadastro)
-
             //cria um novo cliente
-            let new_cliente = new Cliente(clientes_id, nome, data_nascimento, cpf, email, senha)
-            clientes_id++
+            let new_cliente = new Cliente(nome, data_nascimento, cpf, email, senha)
             clientes.push(new_cliente)
+
+            //cria novo cadastro
+            cadastros.push(new_cliente)
 
             console.log("Cadastro criado")
 
@@ -105,21 +108,19 @@ class Sistema{
 
             //Não permite dois emails iguais nos cadastros
             for (let i = 0; i < cadastros.length; i++) {
-                if (cadastros[i][0] == email) {
+                if (cadastros[i].email == email) {
                   console.log("Email já cadastrado")
                   return
                 }
             }
             let senha = prompt("crie a sua senha: ")
 
-            //cria um novo cadastro
-            let cadastro = [email,senha,1]
-            cadastros.push(cadastro)
-
             //cria um novo funcioário
-            let new_funcionario = new Funcionário(funcionarios_id, nome, cpf, email, senha)
-            funcionarios_id++
+            let new_funcionario = new Funcionário(nome, cpf, email, senha)
             funcionarios.push(new_funcionario)
+
+            //cria novo cadastro
+            cadastros.push(new_funcionario)
 
             console.log("Cadastro criado")
 
@@ -141,28 +142,28 @@ class Sistema{
         for (let i = 0; i < cadastros.length; i++) {
 
             //Encontrou email nos cadastros
-            if (cadastros[i][0] == email) {
+            if (cadastros[i].email == email) {
                 let senha = prompt("digite a sua senha: ")
 
                 //Confere se a senha está correta
-                if(cadastros[i][1] == senha){
+                if(cadastros[i].senha == senha){
 
                     //login como cliente
-                    if(cadastros[i][2]==0){
+                    if(cadastros[i].cliente){
                         login_status=0
-                        login_conta=email
+                        login_conta=cadastros[i]
 
-                        console.log("Logado")
+                        console.log("Cliente Logado")
 
                         return
                     }
 
                     //login como funcionário
-                    if(cadastros[i][2]==1){
+                    if(!cadastros[i].cliente){
                         login_status=1
-                        login_conta=email
+                        login_conta=cadastros[i]
 
-                        console.log("Logado")
+                        console.log("Funcionário Logado")
 
                         return
                     }
@@ -197,32 +198,9 @@ class Sistema{
             return
         }
 
-        //Tem um funcionário logado
-        else if(login_status==1){
-            //Procura Funcionário na lista de funcionários
-            for (let index = 0; index < funcionarios.length; index++) {
-                //Encontrou o Funcionário
-                if(funcionarios[index].email==login_conta){
-                    //Imprime os dados do funcionário na tela
-                    console.log(funcionarios[index])
-
-                    return
-                }
-            }
-        }
-
-        //Tem um cliente logado
-        else if(login_status==0){
-            //Procura cliente na lista de clientes
-            for (let index = 0; index < clientes.length; index++) {
-                //Encontrou o cliente
-                if(clientes[index].email==login_conta){
-                    //Imprime os dados do funcionário na tela
-                    console.log(clientes[index])
-
-                    return
-                }
-            }
+        //Tem alguém logado logado
+        else{
+            console.log(login_conta)
         }
     }
 
@@ -236,46 +214,34 @@ class Sistema{
 
         //Tem um funcionário logado
         else if(login_status==1){
-            //Procura Funcionário na lista de funcionários
-            for (let index = 0; index < funcionarios.length; index++) {
-                //Encontrou o Funcionário
-                if(funcionarios[index].email==login_conta){
-                    //Pergunta quais os dados novos
-                    let nome = prompt("digite o seu nome: ")
-                    let cpf = prompt("digite o seu cpf: ")
-                    
-                    //Altera os dados
-                    funcionarios[index].nome = nome
-                    funcionarios[index].cpf = cpf
+            //Pergunta quais os dados novos
+            let nome = prompt("digite o seu nome: ")
+            let cpf = prompt("digite o seu cpf: ")
+            
+            //Altera os dados
+            login_conta.nome = nome
+            login_conta.cpf = cpf
 
-                    console.log("Dados alterados")
+            console.log("Dados alterados")
 
-                    return
-                }
-            }
+            return
         }
 
         //Tem um cliente logado
         else if(login_status==0){
-            //Procura cliente na lista de clientes
-            for (let index = 0; index < clientes.length; index++) {
-                //Encontrou o cliente
-                if(clientes[index].email==login_conta){
-                    //Pergunta quais os dados novos
-                    let nome = prompt("digite o seu nome: ")
-                    let cpf = prompt("digite o seu cpf: ")
-                    let data_nascimento = prompt("digite a sua data de nascimento: ")
-                    
-                    //Altera os dados
-                    clientes[index].nome = nome
-                    clientes[index].cpf = cpf
-                    clientes[index].data_nascimento = data_nascimento
+            //Pergunta quais os dados novos
+            let nome = prompt("digite o seu nome: ")
+            let cpf = prompt("digite o seu cpf: ")
+            let data_nascimento = prompt("digite a sua data de nascimento: ")
+            
+            //Altera os dados
+            login_conta.nome = nome
+            login_conta.cpf = cpf
+            login_conta.data_nascimento = data_nascimento
 
-                    console.log("Dados alterados")
+            console.log("Dados alterados")
 
-                    return
-                }
-            }
+            return
         }
     }
 
@@ -486,6 +452,27 @@ class Sistema{
             console.log("Comando reservado para Funcionários")
 
             return
+        }
+    }
+
+    fazer_pedido(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            console.log("Comando reservado para Clientes")
+
+            return
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            
         }
     }
 }
