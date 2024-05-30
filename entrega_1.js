@@ -20,16 +20,6 @@ let login_conta = 0
 //manipulada pelo método sair() da classe Sistema
 let sair = false
 
-class Pedido extends Produto{
-    constructor(id_cliente, data_pedido){
-        this.id_pedido = pedidos_id
-        pedidos_id++
-        this.id_cliente = id_cliente
-        this.status = "Pendente"
-        this.data_pedido = data_pedido
-    }
-}
-
 class Funcionário{
     constructor(nome, cpf, email, senha){
         this.id_funcionario = funcionarios_id
@@ -62,6 +52,16 @@ class Produto{
         this.quantidade_estoque = quantidade_estoque
         this.nome = nome
         this.descrição = descrição
+    }
+}
+
+class Pedido extends Produto{
+    constructor(id_cliente, data_pedido){
+        this.id_pedido = pedidos_id
+        pedidos_id++
+        this.id_cliente = id_cliente
+        this.status = "Pendente"
+        this.data_pedido = data_pedido
     }
 }
 
