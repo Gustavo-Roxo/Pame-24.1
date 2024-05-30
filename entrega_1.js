@@ -10,6 +10,7 @@ let cadastros = []
 let clientes = []
 let funcionarios = []
 let pedidos = []
+let produtos = []
 
 let login_status = -1
 let login_conta = 0
@@ -72,7 +73,7 @@ class Sistema{
             let email = prompt("digite o seu email: ")
 
             //Não permite dois emails iguais nos cadastros
-            for (let i = 0; i < cadastros.length(); i++) {
+            for (let i = 0; i < cadastros.length; i++) {
                 if (cadastros[i][0] == email) {
                   console.log("Email já cadastrado")
                   return
@@ -89,6 +90,8 @@ class Sistema{
             clientes_id++
             clientes.push(new_cliente)
 
+            console.log("Cadastro criado")
+
             return
         }
         
@@ -100,7 +103,7 @@ class Sistema{
             let email = prompt("digite o seu email: ")
 
             //Não permite dois emails iguais nos cadastros
-            for (let i = 0; i < cadastros.length(); i++) {
+            for (let i = 0; i < cadastros.length; i++) {
                 if (cadastros[i][0] == email) {
                   console.log("Email já cadastrado")
                   return
@@ -117,6 +120,8 @@ class Sistema{
             funcionarios_id++
             funcionarios.push(new_funcionario)
 
+            console.log("Cadastro criado")
+
             return
         }
 
@@ -132,7 +137,7 @@ class Sistema{
         let email = prompt("digite o seu email: ")
 
         //Procura email nos cadastros
-        for (let i = 0; i < cadastros.length(); i++) {
+        for (let i = 0; i < cadastros.length; i++) {
 
             //Encontrou email nos cadastros
             if (cadastros[i][0] == email) {
@@ -146,6 +151,8 @@ class Sistema{
                         login_status=0
                         login_conta=email
 
+                        console.log("Logado")
+
                         return
                     }
 
@@ -153,6 +160,8 @@ class Sistema{
                     if(cadastros[i][2]==1){
                         login_status=1
                         login_conta=email
+
+                        console.log("Logado")
 
                         return
                     }
@@ -190,7 +199,7 @@ class Sistema{
         //Tem um funcionário logado
         else if(login_status==1){
             //Procura Funcionário na lista de funcionários
-            for (let index = 0; index < funcionarios.length(); index++) {
+            for (let index = 0; index < funcionarios.length; index++) {
                 //Encontrou o Funcionário
                 if(funcionarios[index].email==login_conta){
                     //Imprime os dados do funcionário na tela
@@ -204,7 +213,7 @@ class Sistema{
         //Tem um cliente logado
         else if(login_status==0){
             //Procura cliente na lista de clientes
-            for (let index = 0; index < clientes.length(); index++) {
+            for (let index = 0; index < clientes.length; index++) {
                 //Encontrou o cliente
                 if(clientes[index].email==login_conta){
                     //Imprime os dados do funcionário na tela
@@ -227,11 +236,18 @@ class Sistema{
         //Tem um funcionário logado
         else if(login_status==1){
             //Procura Funcionário na lista de funcionários
-            for (let index = 0; index < funcionarios.length(); index++) {
+            for (let index = 0; index < funcionarios.length; index++) {
                 //Encontrou o Funcionário
                 if(funcionarios[index].email==login_conta){
-                    //Imprime os dados do funcionário na tela
-                    console.log(funcionarios[index])
+                    //Pergunta quais os dados novos
+                    let nome = prompt("digite o seu nome: ")
+                    let cpf = prompt("digite o seu cpf: ")
+                    
+                    //Altera os dados
+                    funcionarios[index].nome = nome
+                    funcionarios[index].cpf = cpf
+
+                    console.log("Dados alterados")
 
                     return
                 }
@@ -241,23 +257,50 @@ class Sistema{
         //Tem um cliente logado
         else if(login_status==0){
             //Procura cliente na lista de clientes
-            for (let index = 0; index < clientes.length(); index++) {
+            for (let index = 0; index < clientes.length; index++) {
                 //Encontrou o cliente
                 if(clientes[index].email==login_conta){
-                    //Imprime os dados do funcionário na tela
-                    console.log(clientes[index])
+                    //Pergunta quais os dados novos
+                    let nome = prompt("digite o seu nome: ")
+                    let cpf = prompt("digite o seu cpf: ")
+                    let data_nascimento = prompt("digite a sua data de nascimento: ")
+                    
+                    //Altera os dados
+                    clientes[index].nome = nome
+                    clientes[index].cpf = cpf
+                    clientes[index].data_nascimento = data_nascimento
+
+                    console.log("Dados alterados")
 
                     return
                 }
             }
         }
     }
+
+    ver_produtos(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+    
+            return
+        }
+
+        //Tem um funcionário ou cliente logado
+        else {
+            console.log(produtos.sort(ordem_alfabetica))
+        }
+    }
+}
+
+function ordem_alfabetica(a,b){
+    return a.nome.localeCompare(b.nome)
 }
 
 const sistema = new Sistema()
 
 
-//Não tem ninguem logado
+/*Não tem ninguem logado
 if(login_status==-1){
     console.log("Não tem ninguem logado")
     
@@ -272,4 +315,37 @@ else if(login_status==1){
 //Tem um cliente logado
 else if(login_status==0){
     
+}*/
+
+console.log("Bem vindo")
+console.log("Faça o seu cadastro ou login")
+
+let comando = ""
+
+while(!sair){
+    comando = prompt("Digite o comando: ")
+
+    if(comando == "Fazer login"){
+        sistema.login()
+    }
+
+    else if(comando == "Fazer cadastro"){
+        sistema.cadastro()
+    }
+
+    else if(comando == "Sair"){
+        sistema.sair()
+    }
+
+    else if(comando == "Ver meus dados"){
+        sistema.ver_dados()
+    }
+
+    else if(comando == "Modificar meus dados"){
+        sistema.modificar_dados()
+    }
+
+    else if(comando == "Ver lista de produtos"){
+        sistema.ver_produtos()
+    }
 }
