@@ -1,9 +1,10 @@
 const { none } = require("list")
 const prompt = require("prompt-sync")({sigint:true})
 
-//gera os id's de novos clientes e funcionários
+//gera os id's de novos clientes, funcionários e pedidos
 let clientes_id = 0
 let funcionarios_id = 0
+let pedidos_id = 0
 
 //os bancos de dados do sistema
 let cadastros = []
@@ -49,7 +50,7 @@ class Cliente{
     }
 }
 
-class Produtos{
+class Produto{
     constructor(validade, preço, quantidade_estoque, nome, descrição){
         this.validade = validade
         this.preço = preço
@@ -291,6 +292,174 @@ class Sistema{
             console.log(produtos.sort(ordem_alfabetica))
         }
     }
+
+    ver_pedidos(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            console.log(pedidos.sort(ordem_cronologica))
+
+            return
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            console.log("Comando reservado para Funcionários")
+
+            return
+        }
+    }
+
+    ver_clientes(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            console.log(clientes.sort(ordem_alfabetica))
+
+            return
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            console.log("Comando reservado para Funcionários")
+
+            return
+        }
+    }
+
+    mudar_status_pedido(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            let pedido_id = prompt("Id do pedido: ")
+
+            //Procura Pedido na lista de pedidos
+            for (let index = 0; index < pedidos.length; index++) {
+                //Encontrou o pedido
+                if(pedidos[index].id_pedido==pedido_id){
+                    //Pergunta quais os dados novos
+                    let novo_status = prompt("digite o novo status: ")
+                    
+                    //Altera o status
+                    pedidos[index].status = novo_status
+
+                    console.log("Status alterado")
+
+                    return
+                }
+            }
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            console.log("Comando reservado para Funcionários")
+
+            return
+        }
+    }
+
+    adicionar_produto(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            //Pergunta quais os dados do novo Produto
+            let validade = prompt("digite a validade do produto: ")
+            let preço = prompt("digite o preço: ")
+            let quantidade_estoque = prompt("digite a quantidade em estoque: ")
+            let nome = prompt("digite o nome: ")
+            let descrição = prompt("digite a descrição do produto: ")
+            
+            //Cria um novo Produto
+            let novo_produto = new Produto(validade, preço, quantidade_estoque, nome, descrição)
+            produtos.push(novo_produto)
+
+            console.log("Produto adcionado")
+
+            return
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            console.log("Comando reservado para Funcionários")
+
+            return
+        }
+    }
+
+    editar_produto(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            let produto_nome = prompt("Nome do produto: ")
+
+            //Procura Produto na lista de produtos
+            for (let index = 0; index < produtos.length; index++) {
+                //Encontrou o Produto
+                if(produtos[index].nome==produto_nome){
+                    //Pergunta quais os dados novos
+                    let validade = prompt("digite a validade do produto: ")
+                    let preço = prompt("digite o preço: ")
+                    let quantidade_estoque = prompt("digite a quantidade em estoque: ")
+                    let nome = prompt("digite o nome: ")
+                    let descrição = prompt("digite a descrição do produto: ")
+                    
+                    //Altera os dados
+                    produtos[index].validade = validade
+                    produtos[index].preço = preço
+                    produtos[index].quantidade_estoque = quantidade_estoque
+                    produtos[index].nome = nome
+                    produtos[index].descrição = descrição
+
+                    console.log("Produto editado")
+
+                    return
+                }
+            }
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            console.log("Comando reservado para Funcionários")
+
+            return
+        }
+    }
+
+    excluir_produto
+}
+
+function ordem_cronologica(a,b){
+    return (a.data_pedido - b.data_pedido)
 }
 
 function ordem_alfabetica(a,b){
@@ -300,28 +469,29 @@ function ordem_alfabetica(a,b){
 const sistema = new Sistema()
 
 
-/*Não tem ninguem logado
-if(login_status==-1){
-    console.log("Não tem ninguem logado")
-    
-    return
-}
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
 
-//Tem um funcionário logado
-else if(login_status==1){
+        //Tem um funcionário logado
+        else if(login_status==1){
 
-}
+        }
 
-//Tem um cliente logado
-else if(login_status==0){
-    
-}*/
+        //Tem um cliente logado
+        else if(login_status==0){
+            
+        }
 
 console.log("Bem vindo")
 console.log("Faça o seu cadastro ou login")
 
 let comando = ""
 
+//Interface do programa
 while(!sair){
     comando = prompt("Digite o comando: ")
 
