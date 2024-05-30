@@ -455,7 +455,39 @@ class Sistema{
         }
     }
 
-    excluir_produto
+    excluir_produto(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            let produto_nome = prompt("Nome do produto: ")
+
+            //Procura Produto na lista de produtos
+            for (let index = 0; index < produtos.length; index++) {
+                //Encontrou o Produto
+                if(produtos[index].nome==produto_nome){
+                    //Exclui o Produto da lista de produtos
+                    produtos[index] = null
+
+                    console.log("Produto excluido")
+
+                    return
+                }
+            }
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            console.log("Comando reservado para Funcionários")
+
+            return
+        }
+    }
 }
 
 function ordem_cronologica(a,b){
