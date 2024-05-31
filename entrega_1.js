@@ -586,7 +586,52 @@ class Sistema{
         }
     }
 
-    
+    ver_meus_pedidos(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            console.log("Comando reservado para Clientes")
+
+            return
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            let meus_pedidos = []
+
+            let pedido_encontrado = false
+
+            //Procura Pedido na lista de pedidos
+            for (let index = 0; index < pedidos.length; index++) {
+                //Encontrou o Pedido
+                if(pedidos[index].id_cliente==login_conta.id_cliente){
+                    pedido_encontrado = true
+
+                    //Adiciona Pedido a lista de meus pedidos
+                    meus_pedidos.push(pedidos[index])
+                }
+            }
+
+            //Nenhum Pedido encontrado
+            if(!pedido_encontrado){
+                console.log("Você não possui pedidos")
+            }
+
+            meus_pedidos.sort(ordem_cronologica)
+
+            console.log(meus_pedidos)
+        }
+    }
+
+    avaliar_pedido(){
+        
+    }
 }
 
 function ordem_cronologica(a,b){
