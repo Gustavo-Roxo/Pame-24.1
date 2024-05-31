@@ -480,11 +480,14 @@ class Sistema{
             //Monta o carrinho de compras
             while(true){
                 let produto = prompt("Digite o nome do produto para adicionar ao carrinho: ")
+                let produto_encontrado = false
 
                 //Procura Produto na lista de produtos
                 for (let index = 0; index < produtos.length; index++) {
                     //Encontrou o Produto
                     if(produtos[index].nome==produto){
+                        produto_encontrado = true
+
                         //Adiciona Produto ao carrinho
                         carrinho.push(produtos[index])
 
@@ -498,6 +501,10 @@ class Sistema{
 
                         break
                     }
+                }
+
+                if(!produto_encontrado){
+                    console.log("Produto não encontrado")
                 }
 
                 let resposta = prompt("Deseja adicionar mais alguma coisa ao pedido? (Sim/Não): ")
@@ -540,6 +547,46 @@ class Sistema{
             return
         }
     }
+
+    cancelar_pedido(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            console.log("Comando reservado para Clientes")
+
+            return
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            let pedido_id = prompt("Digite o ID do Pedido: ")
+
+            //Procura Pedido na lista de pedidos
+            for (let index = 0; index < pedidos.length; index++) {
+                //Encontrou o Pedido
+                if(pedidos[index].id_pedido==pedido_id){
+                    //Cancela o Pedido
+                    pedidos[index].status = "cancelado"
+                    console.log("Pedido cancelado")
+                    
+                    //Reabastece o estoque
+                    for (let i = 0; i < pedidos[index].lista_produtos.length; i++) {
+                        pedidos[index].lista_produtos[i].quantidade_estoque++
+                    }
+
+                    return
+                }
+            }
+        }
+    }
+
+    
 }
 
 function ordem_cronologica(a,b){
@@ -553,7 +600,7 @@ function ordem_alfabetica(a,b){
 const sistema = new Sistema()
 
 
-        /*Não tem ninguem logado
+        //Não tem ninguem logado
         if(login_status==-1){
             console.log("Não tem ninguem logado")
             
@@ -568,7 +615,7 @@ const sistema = new Sistema()
         //Tem um cliente logado
         else if(login_status==0){
             
-        }*/
+        }
 
 console.log("Bem vindo")
 console.log("Faça o seu cadastro ou login")
