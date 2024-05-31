@@ -103,7 +103,7 @@ class Sistema{
         
         //usuário escreveu: "funcionário"
         //funcionário = 1 nos cadastros
-        else if(conta=="funcionário"){
+        else if(conta=="funcionario"){
             let nome = prompt("digite o seu nome: ")
             let cpf = prompt("digite o seu cpf: ")
             let email = prompt("digite o seu email: ")
@@ -501,8 +501,14 @@ class Sistema{
                 }
 
                 let resposta = prompt("Deseja adicionar mais alguma coisa ao pedido? (Sim/Não): ")
-                if(resposta=="Não"){
+                if(resposta=="Nao"){
                     break
+                }
+
+                if(resposta!="Sim"){
+                    console.log("Resposta inválida")
+
+                    return
                 }
             }
 
@@ -511,7 +517,7 @@ class Sistema{
             console.log(valor_carrinho)
             let resposta = prompt("Confirmar Pedido? (Sim/Não): ")
 
-            if(resposta=="Não"){
+            if(resposta=="Nao"){
                 return
             }
 
@@ -547,7 +553,7 @@ function ordem_alfabetica(a,b){
 const sistema = new Sistema()
 
 
-        //Não tem ninguem logado
+        /*Não tem ninguem logado
         if(login_status==-1){
             console.log("Não tem ninguem logado")
             
@@ -562,7 +568,7 @@ const sistema = new Sistema()
         //Tem um cliente logado
         else if(login_status==0){
             
-        }
+        }*/
 
 console.log("Bem vindo")
 console.log("Faça o seu cadastro ou login")
@@ -595,5 +601,33 @@ while(!sair){
 
     else if(comando == "Ver lista de produtos"){
         sistema.ver_produtos()
+    }
+
+    else if(comando == "Ver lista de pedidos"){
+        sistema.ver_pedidos()
+    }
+
+    else if(comando == "Ver lista de clientes"){
+        sistema.ver_clientes()
+    }
+
+    else if(comando == "Mudar status do pedido"){
+        sistema.mudar_status_pedido()
+    }
+
+    else if(comando == "Adicionar produto"){
+        sistema.adicionar_produto()
+    }
+
+    else if(comando == "Editar produto"){
+        sistema.editar_produto()
+    }
+
+    else if(comando == "Excluir produto"){
+        sistema.excluir_produto()
+    }
+
+    else if(comando == "Fazer pedido"){
+        sistema.fazer_pedido()
     }
 }
