@@ -183,7 +183,7 @@ class Sistema{
 
                 //Senha incorreta
                 else{
-                    console.log("Senha incorreta\n")
+                    console.log("Senha incorreta")
 
                     return
                 }
@@ -696,6 +696,27 @@ class Sistema{
             return
         }
     }
+
+    visualizar_avaliações(){
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            console.log("Comando reservado para Clientes")
+
+            return
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            console.log(avaliações)
+        }
+    }
 }
 
 function ordem_cronologica(a,b){
@@ -708,26 +729,32 @@ function ordem_alfabetica(a,b){
 
 const sistema = new Sistema()
 
-
-        //Não tem ninguem logado
-        if(login_status==-1){
-            console.log("Não tem ninguem logado")
-            
-            return
-        }
-
-        //Tem um funcionário logado
-        else if(login_status==1){
-
-        }
-
-        //Tem um cliente logado
-        else if(login_status==0){
-            
-        }
-
 console.log("Bem vindo")
 console.log("Faça o seu cadastro ou login")
+
+const comandos = `Comandos disponíveis:
+
+Fazer cadastro
+Fazer login
+Sair
+Ver meus dados
+Modificar meus dados
+Ver lista de produtos
+Ver lista de pedidos
+Ver lista de clientes
+Mudar status do pedido
+Adicionar produto
+Editar produto
+Excluir produto
+Fazer pedido
+Cancelar pedido
+Ver meus pedidos
+Avaliar pedido
+Visualizar avaliacoes
+
+`
+
+console.log(comandos)
 
 let comando = ""
 
@@ -785,5 +812,21 @@ while(!sair){
 
     else if(comando == "Fazer pedido"){
         sistema.fazer_pedido()
+    }
+
+    else if(comando == "Cancelar pedido"){
+        sistema.cancelar_pedido()
+    }
+
+    else if(comando == "Ver meus pedidos"){
+        sistema.ver_meus_pedidos()
+    }
+
+    else if(comando == "Avaliar pedido"){
+        sistema.avaliar_pedido()
+    }
+
+    else if(comando == "Visualizar avaliacoes"){
+        sistema.visualizar_avaliações()
     }
 }
