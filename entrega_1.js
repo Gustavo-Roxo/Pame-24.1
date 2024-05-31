@@ -12,7 +12,9 @@ let clientes = []
 let funcionarios = []
 let pedidos = []
 let produtos = []
+let avaliações = []
 
+//guarda o cadastro atualmente logado
 let login_status = -1
 let login_conta = 0
 
@@ -64,6 +66,14 @@ class Pedido{
         this.data_pedido = data_pedido
         this.lista_produtos = lista_produtos
         this.valor = valor
+    }
+}
+
+class Avaliacao{
+    constructor(id_pedido, nota, descrição){
+        this.id_pedido = id_pedido
+        this.nota = nota
+        this.descrição = descrição
     }
 }
 
@@ -630,7 +640,61 @@ class Sistema{
     }
 
     avaliar_pedido(){
-        
+        //Não tem ninguem logado
+        if(login_status==-1){
+            console.log("Não tem ninguem logado")
+            
+            return
+        }
+
+        //Tem um funcionário logado
+        else if(login_status==1){
+            console.log("Comando reservado para Clientes")
+
+            return
+        }
+
+        //Tem um cliente logado
+        else if(login_status==0){
+            let pedido_id = parseInt(prompt("Digite o ID do pedido: "))
+            let pedido_encontrado = false
+
+            //Procura Pedido na lista de pedidos
+            for (let index = 0; index < pedidos.length; index++) {
+                //Encontrou o Pedido
+                if(pedidos[index].id_pedido==pedido_id){
+                    pedido_encontrado = true
+
+                    break
+                }
+            }
+
+            //Pedido não encontrado
+            if(!pedido_encontrado){
+                console.log("Não existem pedidos com esse ID")
+
+                return
+            }
+
+            let nota = parseInt(prompt("Dê uma nota para o pedido (0 a 10): "))
+            
+            //Testa se a nota esta dentro do intervalo
+            if(nota<0||nota>10){
+                console.log("Nota inválida!")
+
+                return
+            }
+
+            let descricao = prompt("Digite um descrição da avaliação")
+
+            let avaliação = new Avaliacao(pedido_id, nota, descricao)
+
+            avaliação.push(avaliação)
+
+            console.log("Avaliação publicada!")
+
+            return
+        }
     }
 }
 
