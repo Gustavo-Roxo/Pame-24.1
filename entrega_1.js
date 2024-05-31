@@ -1,4 +1,4 @@
-const { none } = require("list")
+const { none, repeat } = require("list")
 const prompt = require("prompt-sync")({sigint:true})
 
 //gera os id's de novos clientes, funcionários e pedidos
@@ -55,13 +55,15 @@ class Produto{
     }
 }
 
-class Pedido extends Produto{
-    constructor(id_cliente, data_pedido){
+class Pedido{
+    constructor(data_pedido, lista_produtos, valor){
         this.id_pedido = pedidos_id
         pedidos_id++
         this.id_cliente = id_cliente
         this.status = "Pendente"
         this.data_pedido = data_pedido
+        this.lista_produtos = lista_produtos
+        this.valor = valor
     }
 }
 
@@ -472,7 +474,64 @@ class Sistema{
 
         //Tem um cliente logado
         else if(login_status==0){
-            
+            let carrinho = []
+            let valor_carrinho = 0
+
+            //Monta o carrinho de compras
+            while(true){
+                let produto = prompt("Digite o nome do produto para adicionar ao carrinho: ")
+
+                //Procura Produto na lista de produtos
+                for (let index = 0; index < produtos.length; index++) {
+                    //Encontrou o Produto
+                    if(produtos[index].nome==produto){
+                        //Adiciona Produto ao carrinho
+                        carrinho.push(produtos[index])
+
+                        //Diminui a quantidade em estoque do Produto
+                        produtos[index].quantidade_estoque--
+
+                        //Adiciona o preço do Produto ao valor total do carrinho
+                        valor_carrinho += produtos[index].preço
+
+                        console.log("Produto adcionado ao carrinho")
+
+                        break
+                    }
+                }
+
+                let resposta = prompt("Deseja adicionar mais alguma coisa ao pedido? (Sim/Não): ")
+                if(resposta=="Não"){
+                    break
+                }
+            }
+
+            //Confirma o Pedido
+            console.log(carrinho)
+            console.log(valor_carrinho)
+            let resposta = prompt("Confirmar Pedido? (Sim/Não): ")
+
+            if(resposta=="Não"){
+                return
+            }
+
+            if(resposta=="Sim"){
+                //Cria Pedido
+                let data_pedido = prompt("Digite a data do pedido: ")
+                let new_pedido = new Pedido(data_pedido, carrinho, valor_carrinho)
+
+                //Adiciona Pedido a lista de pedidos
+                pedidos.push(new_pedido)
+
+                console.log("Pedido concluido!")
+                console.log("Esse é o ID do seu pedido: " + new_pedido.id_pedido)
+
+                return
+            }
+
+            console.log("Resposta inválida")
+
+            return
         }
     }
 }
